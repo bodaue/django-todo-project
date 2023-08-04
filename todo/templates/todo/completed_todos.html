@@ -2,7 +2,7 @@
 
 
 {% block content %}
-Current Todos
+Completed Todos
 <ul>
     {% for todo in todos %}
 
@@ -17,6 +17,7 @@ Current Todos
             {% if todo.description%}
             - {{ todo.description }}
             {% endif %}
+            {{ todo.achieve_date|date:'M j Y H:i' }}
         </a>
     </li>
 
