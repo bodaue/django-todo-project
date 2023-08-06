@@ -16,7 +16,11 @@ def home(request):
 
 def signup_user(request):
     if request.method == 'GET':
-        return render(request, 'todo/signup_user.html', {'form': UserCreationForm()})
+        if request.user.is_authenticated:
+            print(request.user, 'qweqweq')
+            return redirect('current_todos')
+        else:
+            return render(request, 'todo/signup_user.html', {'form': UserCreationForm()})
     else:
         if request.POST['password1'] == request.POST['password2']:
             try:
@@ -32,12 +36,15 @@ def signup_user(request):
 
         else:
             return render(request, 'todo/signup_user.html',
-                          {'form': UserCreationForm(), 'error': 'Пароли не сходятся'})
+                          {'form': UserCreationForm(), 'error': 'Пароли не сходятся.'})
 
 
 def login_user(request):
     if request.method == 'GET':
-        return render(request, 'todo/login_user.html', {'form': AuthenticationForm()})
+        if request.user.is_authenticated:
+            return redirect('current_todos')
+        else:
+            return render(request, 'todo/login_user.html', {'form': AuthenticationForm()})
     else:
         user = authenticate(request, username=request.POST['username'], password=request.POST['password'])
         if user:
